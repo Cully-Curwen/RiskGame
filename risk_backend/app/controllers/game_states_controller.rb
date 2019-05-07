@@ -1,0 +1,3 @@
+class GameStatesController < ApplicationController
+  
+end
