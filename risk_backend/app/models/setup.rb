@@ -8,7 +8,9 @@ class Setup
     randomStart
     Game.STATE[:currentPhase] = "Setup - Deployment"
     Game.STATE[:currentPlayer] = Game.STATE[:users].sample
-    Game.nextPlayer
+    while Game.STATE[:currentPlayer].id == 0 do
+      Game.STATE[:currentPlayer] = Game.STATE[:users].sample
+    end
     puts "startGame completed"
   end
 
@@ -39,7 +41,7 @@ class Setup
 
   def self.placeTroops(territory_id, armies)
     Game.STATE[:territories].find{ |tet| ter.id == territory_id }.armies = armies
-    Game.STATE[:actionCount]
+    Game.actionTick
   end
 
 end

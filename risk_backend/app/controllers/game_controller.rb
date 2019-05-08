@@ -31,7 +31,13 @@ class GameController < ApplicationController
   end
 
   def nextPlayer
-    Game.nextPlayer
+    currentPlayer = params[:currentPlayer]
+    if currentPlayer_id == GAME.STATE[:currentPlayer].id
+      Game.nextPlayer
+      render json: Game.gameState,
+    else
+      render json: {error: 'Not your turn'}, status: 401
+    end
   end
 
   def quickGen
