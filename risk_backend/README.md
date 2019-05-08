@@ -1,24 +1,40 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+# API Instructions
+//DataType// is indication of needed data for the body
+* BASE URL will be the servers host IP Address ]
+  - example - 'http://IP_ADDRESS/'
 
-* Ruby version
+<b>Universal</b>
+* GET - GAME STATE
+  - route 'state'
+  - returns Game.STATE
 
-* System dependencies
+* POST - END TURN
+  - route 'endturn'
+  - body: {user_id: //int// }
+  - returns Game.STATE
 
-* Configuration
+<b>Game Setup Phase</b>
+* POST - CONNECT SERVER
+  - route 'connect'
+  - body: {user: {name: //string//, colour: //string// }}
+  - returns Game.STATE[:users]
 
-* Database creation
+* POST - START GAME
+  - route 'start_game'
+  - body: {user_id: //int//, ready: //boolean//}
+  - return Game.LIVE + Setup.READY
 
-* Database initialization
+* POST - DEPLOY ARMIES
+  - route 'deploy_armies'
+  - body: {user_id: //int//, territory_id: //id//, armies: //int//}
+      - note; armies count must be 2 or less for Deploy Phase in the GAME Setup
+  - return Game.STATE + Setup.STATE
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+<b>Reinforcement Phase</b>
+<br>
+<b>Battle Phase</b>
+<br>
+<b>Redeployment Phase</b>
