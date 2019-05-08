@@ -1,3 +1,0 @@
-class GameStatesController < ApplicationController
-  
-end
