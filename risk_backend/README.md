@@ -22,3 +22,10 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+# API Instructions
+* Routes
+  
+*  get 'state' - Returns JSON  of GAME STATE
+

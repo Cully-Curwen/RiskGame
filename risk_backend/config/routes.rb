@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   get 'users/new', to: 'game#newUser'
   get 'start', to: 'game#startGame'
   get 'state', to: 'game#gameState'
+  get 'gen', to: 'game#quickGen'
 end

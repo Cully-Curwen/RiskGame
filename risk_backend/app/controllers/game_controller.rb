@@ -23,7 +23,7 @@ class GameController < ApplicationController
   end
 
   def startGame
-    Game.startGame
+    Setup.startGame
   end
 
   def gameState
@@ -32,6 +32,14 @@ class GameController < ApplicationController
 
   def nextPlayer
     Game.nextPlayer
+  end
+
+  def quickGen
+    if Game.STATE[:users].count < 2
+      User.new(id: 1, name: "Greg", colour: "Blue")
+      User.new(id: 2, name: "Bob", colour: "Red")
+    end
+    Setup.startGame
   end
 
 end

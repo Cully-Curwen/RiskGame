@@ -1,5 +1,6 @@
 class Territory
-  attr_reader :id, :owner, :armies
+  attr_reader :id
+  attr_accessor :owner, :armies
 
   COUNT = 42
 
