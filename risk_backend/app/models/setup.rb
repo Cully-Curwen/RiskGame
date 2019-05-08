@@ -1,6 +1,7 @@
 class Setup
 
   STATE = []
+  READY = []
 
   def self.STATE
     STATE
@@ -31,7 +32,7 @@ class Setup
     when 0, 1 
       return false
     when  2
-      User.new(id: 0, name: "Neutral", colour: "#B1B4B8")
+      User.new(neutral: true, name: "Neutral", colour: "#B1B4B8")
       Game.STATE[:users].map{ |user| STATE << {user.id => 40} }
     when 3
       Game.STATE[:users].map{ |user| STATE << {user.id => 35} }

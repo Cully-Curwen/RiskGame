@@ -4,10 +4,11 @@ Rails.application.routes.draw do
   get 'users/new', to: 'game#newUser'
   get 'gen', to: 'game#quickGen'
   # Universal
+  root to: 'game#gameState'
   get 'state', to: 'game#gameState'
-  post 'end_turn', to: 'endTurn#gameState'
+  post 'end_turn', to: 'game#endTurn'
   # Setup Phase
-  post 'start_game', to 'setup#startGame'
-  post 'connect', to 'setup#connect'
-  post 'deploy_armies', to 'setup#deployArmies'
+  post 'start_game', to: 'setup#startGame'
+  post 'connect', to: 'setup#connect'
+  post 'deploy_armies', to: 'setup#deployArmies'
 end

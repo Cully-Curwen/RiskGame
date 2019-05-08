@@ -9,6 +9,7 @@ class  Game
     currentPlayer: nil,
     currentPhase: nil,
   }
+  LIVE = false
 
   def self.STATE 
     STATE
