@@ -6,7 +6,6 @@ class  Game
     territories: [],
     liveBattle: nil,
     turn: 0,
-    actionCount: 0,
     currentPlayer: nil,
     currentPhase: nil,
   }
@@ -17,10 +16,6 @@ class  Game
 
   def self.gameState
     STATE.to_json
-  end
-
-  def self.actionTick
-    STATE[:actionCount] += 1
   end
 
   def self.nextPlayer
@@ -34,7 +29,6 @@ class  Game
       neutralTurn(STATE[:currentPlayer])
       nextPlayer
     end
-    actionTick
   end
 
   def self.neutralTurn(currentPlayer)
@@ -42,7 +36,6 @@ class  Game
     while armies > 0 do
       usersTerritories.sample.armies += 1
       armies -= 1
-      actionTick
     end
   end
 
