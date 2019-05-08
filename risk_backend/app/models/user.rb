@@ -1,5 +1,6 @@
 class User
   attr_reader :id, :name, :colour
+  attr_accessor :income
 
   def initialize(attr = {})
     @id = attr[:id]

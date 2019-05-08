@@ -1,5 +1,11 @@
 class Setup
 
+  STATE = []
+
+  def self.STATE
+    STATE
+  end
+
   def self.startGame
     puts "startGame called"
     if checkPlayerCount == false
@@ -7,11 +13,16 @@ class Setup
     end
     randomStart
     Game.STATE[:currentPhase] = "Setup - Deployment"
+    goesFirst
+    puts "startGame completed"
+  end
+  
+  def self.goesFirst
+    puts "goesFirst called"
     Game.STATE[:currentPlayer] = Game.STATE[:users].sample
     while Game.STATE[:currentPlayer].id == 0 do
       Game.STATE[:currentPlayer] = Game.STATE[:users].sample
     end
-    puts "startGame completed"
   end
 
   def self.checkPlayerCount
@@ -21,10 +32,17 @@ class Setup
       return false
     when  2
       User.new(id: 0, name: "Neutral", colour: "#B1B4B8")
-      return true
-    else
-      return true
+      Game.STATE[:users].map{ |user| STATE << {user.id => 40} }
+    when 3
+      Game.STATE[:users].map{ |user| STATE << {user.id => 35} }
+    when 4
+      Game.STATE[:users].map{ |user| STATE << {user.id => 30} }
+    when 5
+      Game.STATE[:users].map{ |user| STATE << {user.id => 25} }
+    when 6
+      Game.STATE[:users].map{ |user| STATE << {user.id => 20} }
     end
+    return true
   end
 
   def self.randomStart
@@ -41,7 +59,6 @@ class Setup
 
   def self.placeTroops(territory_id, armies)
     Game.STATE[:territories].find{ |tet| ter.id == territory_id }.armies = armies
-    Game.actionTick
   end
 
 end

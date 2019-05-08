@@ -26,13 +26,13 @@ class  Game
     end
     STATE[:currentPlayer] = STATE[:users][index]
     if STATE[:currentPlayer].id == 0
-      neutralTurn(STATE[:currentPlayer])
+      neutralTurn
       nextPlayer
     end
   end
 
-  def self.neutralTurn(currentPlayer)
-    armies = currentPlayer.income
+  def self.neutralTurn
+    armies = STATE[:currentPlayer].income
     while armies > 0 do
       usersTerritories.sample.armies += 1
       armies -= 1
