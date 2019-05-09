@@ -7,6 +7,10 @@ class Setup
     STATE
   end
 
+  def self.READY
+    READY
+  end
+
   def self.startGame
     puts "startGame called"
     if checkPlayerCount == false

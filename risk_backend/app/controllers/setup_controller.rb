@@ -2,6 +2,18 @@ require 'json'
 
 class SetupController < ApplicationController
 
+  def connect
+    if connect_params
+      playerReg = User.new(name: params[:user][:name], colour: params[:user][:colour])
+      render json: playerReg.to_json, status: :accepted
+    else
+      render json: {error: 'Wrong Details'}, status: 400
+  end
+
+  def lobby
+    render json: Game.STATE[:users].to_json, status: :accepted
+  end
+
   def startGame
     user_id = params[:user_id]
     ready = params[:ready]
@@ -13,14 +25,6 @@ class SetupController < ApplicationController
     else
       render json: {gameLive: Game.LIVE, setupReady: Setup.READY}.to_json, status: :accepted
     end
-  end
-
-  def connect
-    if connect_params
-      User.new(name: params[:user][:name], colour: params[:user][:colour])
-      render json: Game.STATE[:users].to_json, status: :accepted
-    else
-      render json: {error: 'Wrong Details'}, status: 400
   end
 
   def deployArmies
@@ -38,7 +42,7 @@ class SetupController < ApplicationController
 
   private
   def connect_params
-    params.require(:user).require(:name, :colour)
+    params.require(:user).permit(:name, :colour)
   end
 
 end
