@@ -22,6 +22,18 @@ div.box {
   font-size: 55px;
   text-shadow: 2px 2px #FF0000;
   letter-spacing: 3px;
+}#h1{
+  box-sizing: border-box;
+  height: 60px;
+  border: 1px solid white;
+  float: left;
+  animation-duration: 0.7s;
+  animation-delay: 0.5s;
+  font-family: 'Permanent Marker', cursive;
+  font-variant: small-caps;
+  font-size: 50px;
+  text-shadow: 2px 2px #FF0000;
+  letter-spacing: 3px;
 }
 #canvas{
   position: relative;
@@ -51,7 +63,7 @@ div.box {
  top: 90px;
  left: 1px;
 }
-#item1, #item2, #item3, #item4, #battle1, #battle2, #battle3, #battle4 {
+#item1, #item2, #item3, #item4, #item5, #item6, #battle1, #battle2, #battle3, #battle4 {
 position: relative;
 padding-left: 20%;
 animation-duration: 0.7s;
@@ -63,6 +75,16 @@ font-size: 25px;
 text-shadow: 2px #FF0000;
 letter-spacing: 3px;
 }
-body{
+.button_deployment {
+  background-color: #555555;
+}
+
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
 }
 </style>

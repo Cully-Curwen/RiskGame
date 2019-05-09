@@ -1,76 +1,73 @@
 
-let state = {
-  battle: true,
-  game_status : ""
-}
+const IP_ADDRESS = "http://10.218.7.206:3000/"
+
 const get_state = () => {
-  fetch('http://10.218.5.107:3000/state')
+  fetch(IP_ADDRESS+'state')
     .then(resp => resp.json())
-      .then(string => {
-        state.game_status = string
-        setTimeout(get_state, 4000)
-        battle_status_rendering();
+      .then(resp => {
+        Game.state = resp
+        setTimeout(get_state, 444000)
+        render_headers()
+        board_logic();
       })
 }
-const find_state = () => {
-  return state
-}
+
 //render
 class mapObject {
   static all_tiles = [{
-    id: 1,
+    id: 91,
     name: "Alaska",
     coordinates: [[46,112], [35,133], [35,158], [61,163], [82,153], [108,163], [118,143], [105,113], [62,103]],
     color: "#333fff",
-    neighbours: ["2", "3", "36"]
+    neighbours: ["92", "93", "36"]
   },
   {
-    id: 2,
+    id: 92,
     name: "Alberta",
     coordinates:[[108,163], [118,143], [194,153], [194,198], [139,200]],
     color: "#333fff",
-    neighbours: ["4", "3", "6"]
+    neighbours: ["94", "93", "96"]
   },{
-    id: 3,
+    id: 93,
     name:"North-West Territory",
     coordinates: [[107, 113], [119, 145], [201, 152], [214, 157], [220, 143], [243, 146], [242, 123], [233, 110], [211, 101], [198, 110], [187, 88], [167, 93], [141, 86], [137, 99], [154, 101], [160, 111], [130, 106]],
     color:"#333fff",
-    neighbours:["1", "2", "6", "7"]
+    neighbours:["91", "92", "96", "97"]
   },{
-    id: 4,
+    id: 94,
     name:"Western United States",
     coordinates:[[139,200], [142,224], [149,238], [187,241], [192,226],[204,225], [205,200], [194,198]],
     color:"#333fff",
-    neighbours:["9", "5", "3"]
+    neighbours:["99", "95", "93"]
   },{
-    id: 5,
+    id: 95,
     name:"Eastern United States",
     coordinates:[[189, 241], [222, 259], [227, 253], [246, 268], [251, 251], [265, 226], [275, 225], [277, 215], [295, 206], [290, 195], [255, 211], [206, 203], [205, 223], [192, 226]],
     color:"#333fff",
-    neighbours:["4", "9", "6", "8", "2"]
+    neighbours:["94", "99", "96", "98", "92"]
   },{
-    id: 6,
+    id: 96,
     name:"Ontario",
     coordinates:[[195, 153], [196, 197], [255, 211], [246, 174], [233, 172], [213, 157]],
     color:"#333fff",
-    neighbours:["3", "2", "8", "5", "7", "22"]
+    neighbours:["93", "92", "98", "95", "97", "22"]
   },{
-    id: 7,
+    id: 97,
     name:"Greenland",
     coordinates:[[347, 10], [307, 21], [285, 34], [268, 59], [275, 78], [294, 77], [306, 86], [317, 116], [319, 144], [338, 156], [345, 134], [387, 112], [417, 33], [387, 26], [374, 11]],
     color:"#333fff",
-    neighbours:["3", "2", "8", "5"]
+    neighbours:["93", "92", "98", "95"]
   },{
-    id: 8,
+    id: 98,
     name:"Quebec",
     coordinates:[[255, 211], [248, 175], [254, 170], [254, 148], [278, 158], [289, 152], [300, 166], [310, 178], [310, 187], [289, 196]],
-    neighbours:["6", "5", "7"]
+    neighbours:["96", "95", "97"]
   },{
-    id: 9,
+    id: 99,
     name:"Central America",
     coordinates: [[149,238], [156,253], [177,282], [169,257], [184,283], [218,299], [234,313], [256,315], [244,308], [232,279], [216,284], [211,259], [187,241]],
     color:"#333fff",
-    neighbours:["3", "2", "8", "5"]
+    neighbours:["93", "92", "98", "95"]
   },
   //SOUTH AMERICA
   {
@@ -78,7 +75,7 @@ class mapObject {
     name:"Venezuela",
     coordinates:[[259, 316], [256, 327], [248, 345], [268, 353], [268, 336], [291, 329], [300, 335], [319, 321], [304, 318], [298, 308], [281, 312], [271, 306]],
     color:"#ff33fd",
-    neighbours:["13", "12", "9"]
+    neighbours:["13", "12", "99"]
   },
   {
     id: 12,
@@ -114,7 +111,7 @@ class mapObject {
     name:"Iceland",
     coordinates: [[385, 130], [386, 142], [405, 146], [417, 135], [409, 123]],
     color:"#A0FF33",
-    neighbours:["7", "21","24"]
+    neighbours:["97", "21","24"]
   },
   {
     id: 23,
@@ -191,7 +188,7 @@ class mapObject {
     name:"Kamchatka",
     coordinates: [[765, 213], [784, 197], [791, 177], [777, 170], [793, 155], [817, 155], [827, 145], [845, 144], [823, 167], [824, 186], [841, 170], [844, 155], [874, 143], [884, 131], [884, 114], [854, 112], [813, 103], [769, 136], [746, 185]],
     color:"#FFB733",
-    neighbours:[["1","34","35","38","312"]],
+    neighbours:[["91","34","35","38","312"]],
   },
   {
     id: 37,
@@ -306,7 +303,7 @@ class mapObject {
     neighbours:[["51", "52","54"]],
   },]
 
-  static drawterritory = (tile, state) => {
+  static drawterritory = tile => {
     const ctx = canvas.getContext('2d')
     ctx.beginPath();
     for(let i = 0; i < tile.coordinates.length; i++){
@@ -315,14 +312,13 @@ class mapObject {
       }else{
         ctx.lineTo(tile.coordinates[i][0], tile.coordinates[i][1])
         ctx.fillStyle = tile.color;
-        debugger
       };
     };
     ctx.closePath();
     ctx.fill();
     ctx.stroke()
     ctx.lineWidth = 2;
-    ctx.strokeStyle = state.color;
+    // ctx.strokeStyle = Game..color;
   }
 
   static draw_cases = tile =>{
@@ -334,17 +330,55 @@ class mapObject {
     coords.toString
     area.coords = coords+`,${tile.coordinates[0][0]},${tile.coordinates[0][1]}`
     area.onclick = () => {
-      board_logic(tile)
+      board_logic(tile.id)
     }
     append_here.append(area)
   }
   static render = () =>{
     this.all_tiles.map(tile => {
-      this.drawterritory(tile, state);
+      this.drawterritory(tile);
       this.draw_cases(tile);
     })
   }
+  static select = id => this.all_tiles.find(tile =>tile.id == id)
 }
+
+const render_headers = () =>{
+  const turn = document.querySelector("#turn")
+  const phase = document.querySelector("#phase")
+  const current_player = document.querySelector("#currentPlayer")
+  turn.innerText = `Turn: ${Game.state.turn}`
+  phase.innerText = `${Game.state.currentPhase}`
+  currentPlayer.innerText = `${Game.state.currentPlayer.name}'s turn`
+}
+
 
 mapObject.render()
 get_state()
+
+// <b>Universal</b>
+// * GET - GAME STATE
+//   - route 'Game.state'
+//   - returns Game.STATE
+//
+// * POST - END TURN
+//   - route 'endturn'
+//   - body: {user_id: //int// }
+//   - returns Game.STATE
+//
+// <b>Game Setup Phase</b>
+// * POST - CONNECT SERVER
+//   - route 'connect'
+//   - body: {user: {name: //string//, colour: //string// }}
+//   - returns Game.STATE[:users]
+//
+// * POST - START GAME
+//   - route 'start_game'
+//   - body: {user_id: //int//, ready: //boolean//}
+//   - return Game.LIVE + Setup.READY
+//
+// * POST - DEPLOY ARMIES
+//   - route 'deploy_armies'
+//   - body: {user_id: //int//, territory_id: //id//, armies: //int//}
+//       - note; armies count must be 2 or less for Deploy Phase in the GAME Setup
+//   - return Game.STATE + Setup.STATE
