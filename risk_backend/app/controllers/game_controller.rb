@@ -1,7 +1,7 @@
 require 'json'
 
 class GameController < ApplicationController
-
+  # TEST ROUTES
   def try
     puts "********************************************"
     puts Setup.STATE
@@ -24,9 +24,16 @@ class GameController < ApplicationController
       User.new(name: "Bob", colour: "Red")
     end
     Setup.startGame
+    render json: Game.gameState, status: :accepted
   end
-
+  # TEST ROUTES END
+  
   def gameState
+    render json: Game.gameState, status: :accepted
+  end
+  
+  def nextPhase
+    Game.nextPhase
     render json: Game.gameState, status: :accepted
   end
 
