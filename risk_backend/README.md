@@ -52,12 +52,12 @@
 * POST - ATTACK
   - route 'attack'
   - body: {user_id: //int//, base_territory_id: //int//, target_territory_id: //int//, armies: //int//}
-  - return: Game.STATE
+  - return: Game.STATE + Battle.LOCK
   
 * POST - CONTINUE ATTACK
   - route 'continue_attack'
   - body: {user_id: //int//, continue_attack: //boolean//}
-  - return: Game.STATE
+  - return: Game.STATE + Battle.LOCK
 
 <b>Redeployment Phase</b>
 * POST - REDEPLOY
