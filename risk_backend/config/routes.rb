@@ -15,4 +15,9 @@ Rails.application.routes.draw do
   post 'deploy_armies', to: 'setup#deployArmies'
   # Reinforcement Phase
   post 'reinforce', to: 'reinforcement#reinforce'
+  # Battle Phase
+  post 'attack', to: 'battle#attack'
+  post 'continue_attack', to: 'battle#continue_attack'
+  # Redeployment Phase
+  post 'redeploy', to: 'redeployment#redeploy'
 end
