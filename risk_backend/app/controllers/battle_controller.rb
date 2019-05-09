@@ -1,6 +1,6 @@
 require 'json'
 
-class GameController < ApplicationController
+class BattleController < ApplicationController
 
   def attack
     if params[:user_id] == Game.STATE[:currentPlayer].id

@@ -1,3 +1,0 @@
-class Redeploy
-
-end

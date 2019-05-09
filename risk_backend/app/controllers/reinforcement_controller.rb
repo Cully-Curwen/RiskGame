@@ -1,6 +1,6 @@
 require 'json'
 
-class GameController < ApplicationController
+class ReinforcementController < ApplicationController
 
   def reinforce
     if params[:user_id] == Game.STATE[:currentPlayer].id
