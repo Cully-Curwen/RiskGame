@@ -2,7 +2,7 @@ class Territory
   attr_reader :id
   attr_accessor :owner, :armies
 
-  COUNT = 42
+  CODES = 42
 
   def initialize (attr = {})
     @id = attr[:id]
@@ -11,8 +11,8 @@ class Territory
     Game.STATE[:territories] << self
   end
 
-  def self.COUNT
-    COUNT
+  def self.CODES
+    CODES
   end
 
 end

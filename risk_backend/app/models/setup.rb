@@ -52,7 +52,7 @@ class Setup
 
   def self.randomStart
     puts "randomStart called"
-    unowned = (1..Territory.COUNT).to_a
+    unowned = Territory.CODES
     unowned.shuffle!
     while !unowned.empty?
       Game.STATE[:users].map do |user|
