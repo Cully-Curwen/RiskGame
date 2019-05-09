@@ -3,16 +3,21 @@
 
 # API Instructions
 //DataType// is indication of needed data for the body
-* BASE URL will be the servers host IP Address ]
-  - example - 'http://IP_ADDRESS/'
+* BASE URL will be the servers host IP Address + Port (defualt - 3000)
+  - example - 'http://IP_ADDRESS:PORT/'
 
 <b>Universal</b>
 * GET - GAME STATE
-  - route 'state'
+  - route 'state' or root
+  - returns Game.STATE
+
+* POST - NEXT PHASE
+  - route 'next_phase'
+  - body: {user_id: //int// }
   - returns Game.STATE
 
 * POST - END TURN
-  - route 'endturn'
+  - route 'end_turn'
   - body: {user_id: //int// }
   - returns Game.STATE
 
@@ -33,16 +38,29 @@
 
 * POST - DEPLOY ARMIES
   - route 'deploy_armies'
-  - body: {user_id: //int//, territory_id: //id//, armies: //int//}
+  - body: {user_id: //int//, territory_id: //int//, armies: //int//}
       - note; armies count must be 2 or less for Deploy Phase in the GAME Setup
   - return Game.STATE
 
 <b>Reinforcement Phase</b>
-* Post - Reinforce
+* POST - REINFORCE
   - route 'reinforce'
-  - body: {user_id: //int//, territory_id: //id//, armies: //int//}
+  - body: {user_id: //int//, territory_id: //int//, armies: //int//}
   - return: Game.STATE
 
 <b>Battle Phase</b>
-<br>
+* POST - ATTACK
+  - route 'attack'
+  - body: {user_id: //int//, base_territory_id: //int//, target_territory_id: //int//, armies: //int//}
+  - return: Game.STATE
+  
+* POST - CONTINUE ATTACK
+  - route 'continue_attack'
+  - body: {user_id: //int//, continue_attack: //boolean//}
+  - return: Game.STATE
+
 <b>Redeployment Phase</b>
+* POST - REDEPLOY
+  - route 'redeploy'
+  - body: {user_id: //int//, base_territory_id: //int//, target_territory_id: //int//, armies: //int//}
+  - return: Game.STATE + Redeploy.LOCK
