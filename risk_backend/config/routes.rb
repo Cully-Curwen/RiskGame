@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   get 'state', to: 'game#gameState'
   post 'end_turn', to: 'game#endTurn'
   # Setup Phase
-  post 'start_game', to: 'setup#startGame'
+  get 'lobby', to: 'setup#lobby'
   post 'connect', to: 'setup#connect'
+  post 'start_game', to: 'setup#startGame'
   post 'deploy_armies', to: 'setup#deployArmies'
 end

@@ -17,10 +17,14 @@
   - returns Game.STATE
 
 <b>Game Setup Phase</b>
+* GET - LOBBY
+  - route 'lobby'
+  - returns Game.STATE[:users]
+
 * POST - CONNECT SERVER
   - route 'connect'
   - body: {user: {name: //string//, colour: //string// }}
-  - returns Game.STATE[:users]
+  - returns players user object with id in
 
 * POST - START GAME
   - route 'start_game'

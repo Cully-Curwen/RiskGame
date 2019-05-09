@@ -15,6 +15,10 @@ class  Game
     STATE
   end
 
+  def self.LIVE
+    LIVE
+  end
+
   def self.gameState
     STATE.to_json
   end
