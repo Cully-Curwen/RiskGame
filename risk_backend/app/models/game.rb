@@ -48,4 +48,8 @@ class  Game
     STATE[:territories].filter{ |ter| ter.owner.id == STATE[:currentPlayer].id }
   end
 
+  def self.usersTerritoriesIds
+    usersTerritories.map{ |ter| ter.id }
+  end
+
 end 

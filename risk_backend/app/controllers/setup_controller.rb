@@ -3,11 +3,13 @@ require 'json'
 class SetupController < ApplicationController
 
   def connect
-    if connect_params
-      playerReg = User.new(name: params[:user][:name], colour: params[:user][:colour])
+    puts connect_params
+    if connect_params[:name] && connect_params[:colour]
+      playerReg = User.new(name: connect_params[:name], colour: connect_params[:colour])
       render json: playerReg.to_json, status: :accepted
     else
       render json: {error: 'Wrong Details'}, status: 400
+    end
   end
 
   def lobby
@@ -28,15 +30,15 @@ class SetupController < ApplicationController
   end
 
   def deployArmies
-    user_id = params[:user_id]
-    ter_id = params[:territory_id]
-    armies = params[:armies]
-    terArr = Game.usersTerritories.map{ |ter| ter.id }
-    if user_id == Game.STATE[:currentPlayer].id && terArr.include?(par)
-      Setup.placeTroops(ter_id, armies)
-      render json: {gameState: Game.STATE, setupState: Setup.STATE}.to_json, status: :accepted
-    else
+    if params[:user_id] != Game.STATE[:currentPlayer].id
       render json: {error: 'Not your turn'}, status: 401
+    end
+    code = Setup.deploy(params[:territory_id], params[:armies])
+    case code
+    when 0
+      render json: {gameState: Game.STATE, setupState: Setup.STATE}.to_json, status: :accepted
+    when 1
+      render json: {error: 'Not one of your territories'}, status: 401
     end
   end
 
