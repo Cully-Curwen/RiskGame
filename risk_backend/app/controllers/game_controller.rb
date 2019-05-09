@@ -33,8 +33,12 @@ class GameController < ApplicationController
   end
   
   def nextPhase
-    Game.nextPhase
-    render json: Game.gameState, status: :accepted
+    if params[:user_id] == Game.STATE[:currentPlayer].id
+      Game.nextPhase
+      render json: Game.gameState, status: :accepted
+    else
+      render json: {error: 'Not your turn'}, status: 400
+    end
   end
 
   def endTurn

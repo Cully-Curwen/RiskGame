@@ -31,6 +31,7 @@ class  Game
       index = 0
     end
     STATE[:currentPlayer] = STATE[:users][index]
+    lockReset
     STATE[:currentPlayer].setIncome
     if STATE[:currentPlayer].id == 0
       Game.STATE[:currentPhase] == "Deployment" ? Setup.neutralDeploy : neutralTurn
@@ -73,9 +74,15 @@ class  Game
   end
 
   def self.endTurn
+    puts "endTurn called"
     PLAYER_TURNS[:count] += 1
     STATE[:turn] = (PLAYER_TURNS[:count] / STATE[:users].count) + 1
     nextPlayer
+  end
+
+  def self.lockReset
+    Battle.LOCK = []
+    Redeploy.LOCK = []
   end
 
 end 
