@@ -23,9 +23,9 @@ class SetupController < ApplicationController
     test =  Setup.STATE.map{ |key, value| value }
     if !test.includes?(false)
       Setup.startGame
-      render json: {gameLive: Game.LIVE, setupReady: Setup.READY}.to_json, status: :accepted
+      render json: {gameState: Game.STATE, setupReady: Setup.READY}.to_json, status: :accepted
     else
-      render json: {gameLive: Game.LIVE, setupReady: Setup.READY}.to_json, status: :accepted
+      render json: {gameState: Game.STATE, setupReady: Setup.READY}.to_json, status: :accepted
     end
   end
 
@@ -36,7 +36,7 @@ class SetupController < ApplicationController
     code = Setup.deploy(params[:territory_id], params[:armies])
     case code
     when 0
-      render json: {gameState: Game.STATE, setupState: Setup.STATE}.to_json, status: :accepted
+      render json: Game.gameState, status: :accepted
     when 1
       render json: {error: 'Not one of your territories'}, status: 401
     end

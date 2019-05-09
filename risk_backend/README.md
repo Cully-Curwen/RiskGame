@@ -29,13 +29,13 @@
 * POST - START GAME
   - route 'start_game'
   - body: {user_id: //int//, ready: //boolean//}
-  - return Game.LIVE + Setup.READY
+  - return Game.STATE + Setup.READY
 
 * POST - DEPLOY ARMIES
   - route 'deploy_armies'
   - body: {user_id: //int//, territory_id: //id//, armies: //int//}
       - note; armies count must be 2 or less for Deploy Phase in the GAME Setup
-  - return Game.STATE + Setup.STATE
+  - return Game.STATE
 
 <b>Reinforcement Phase</b>
 <br>

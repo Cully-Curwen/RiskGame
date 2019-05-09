@@ -8,8 +8,8 @@ class  Game
     turn: 0,
     currentPlayer: nil,
     currentPhase: nil,
+    live: false
   }
-  LIVE = false
 
   def self.STATE 
     STATE
