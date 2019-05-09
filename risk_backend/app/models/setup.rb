@@ -93,7 +93,7 @@ class Setup
       income = 1
       STATE[currentPlayer.id] -= 1
     elsif STATE[currentPlayer.id] == 0
-      Game.nextPlayer
+      STATE.values.reduce(:+) == 0 ? Game.nextPhase : Game.nextPlayer
     end
     return income
   end

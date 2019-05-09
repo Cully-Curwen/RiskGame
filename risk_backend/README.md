@@ -38,7 +38,11 @@
   - return Game.STATE
 
 <b>Reinforcement Phase</b>
-<br>
+* Post - Reinforce
+  - route 'reinforce'
+  - body: {user_id: //int//, territory_id: //id//, armies: //int//}
+  - return: Game.STATE
+
 <b>Battle Phase</b>
 <br>
 <b>Redeployment Phase</b>
