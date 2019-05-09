@@ -10,6 +10,7 @@ class  Game
     currentPhase: nil,
     live: false
   }
+  PLAYER_TURNS = 0
 
   def self.STATE 
     STATE
@@ -54,6 +55,27 @@ class  Game
   def self.usersTerritoriesIds
     puts "usersTerritoriesIds called"
     usersTerritories.map{ |ter| ter.id }
+  end
+
+  def self.nextPhase
+    puts "nextPhase called"
+    case STATE[:currentPhase]
+    when "Deployment"
+      STATE[:currentPhase] = "Reinforcement"
+      nextPlayer
+    when "Reinforcement"
+      STATE[:currentPhase] = "Battle"
+    when "Battle"
+      STATE[:currentPhase] = "Redeployment"
+    when "Redeployment"
+      STATE[:currentPhase] = "Reinforcement"
+    end
+  end
+
+  def self.endTurn
+    PLAYER_TURNS += 1
+    STATE[:turn] = (PLAYER_TURNS / STATE[:users].count) + 1
+    nextPlayer
   end
 
 end 
