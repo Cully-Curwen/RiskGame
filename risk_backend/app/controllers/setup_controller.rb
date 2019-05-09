@@ -30,18 +30,15 @@ class SetupController < ApplicationController
   end
 
   def deployArmies
-    if params[:user_id] == Game.STATE[:currentPlayer]
+    if params[:user_id] != Game.STATE[:currentPlayer].id
       render json: {error: 'Not your turn'}, status: 401
     end
-    user_id = params[:user_id]
-    ter_id = params[:territory_id]
-    armies = params[:armies]
-    terArr = Game.usersTerritoriesIds
-
-    if terArr.include?(ter_id)
-      Setup.placeTroops(ter_id, armies)
+    code = Setup.deploy(params[:territory_id], params[:armies])
+    case code
+    when 0
       render json: {gameState: Game.STATE, setupState: Setup.STATE}.to_json, status: :accepted
-    else
+    when 1
+      render json: {error: 'Not one of your territories'}, status: 401
     end
   end
 

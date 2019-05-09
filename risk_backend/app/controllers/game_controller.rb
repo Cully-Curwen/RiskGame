@@ -4,12 +4,7 @@ class GameController < ApplicationController
 
   def try
     puts "********************************************"
-    if Game.STATE[:users].empty?
-      puts "users empty"
-    else
-      puts "users are:"
-      Game.STATE[:users].map{|user| puts user.name}
-    end
+    puts Setup.STATE
     puts "********************************************"
   end
 
