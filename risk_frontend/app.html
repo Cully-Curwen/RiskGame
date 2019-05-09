@@ -1,0 +1,36 @@
+<html>
+   <head>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="stylesheet" type="text/css"href="app.css">
+     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+   </head>
+   <body id="body">
+    <div id="top-menu">
+      <div class="container">
+        <div class="box" id="turn">Turn#: </div>
+        <div class="box">Player's Turn</div>
+        <div class="box">Phase:</div>
+      </div>
+    </div>
+      <div class="map" style="position: relative;">
+        <canvas id="canvas" width="1200" height="600"></canvas>
+        <img class="clickable" src="images/output-onlinepngtools.png" width="1200"  usemap="#canvas-map" height="600" alt="trans">
+          <map name="canvas-map">
+          </map>
+              <div id="mySidenav" class="sidenav">
+                <h4 id="item1"class="animated bounce delay-1s"></h4>
+                <h4 id="item2"class="animated bounce delay-1s"></h4>
+                <h4 id="item3"class="animated bounce delay-1s"></h4>
+                <h4 id="item4"class="animated bounce delay-1s"></h4>
+              </div>
+              <div id="mySidenav-bottom" class="sidenav-bottom">
+                <h4 id="battle1"class="animated bounce delay-1s"></h4>
+                <h4 id="battle2"class="animated bounce delay-1s"></h4>
+                <h4 id="battle3"class="animated bounce delay-1s"></h4>
+                <h4 id="battle4"class="animated bounce delay-1s"></h4>
+              </div>
+   </body>
+   <script src="class.js"></script>
+   <script src="app.js"></script>
+</html>

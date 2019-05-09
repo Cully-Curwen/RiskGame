@@ -1,0 +1,68 @@
+<style>
+ @import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
+
+div.top-left-pannel{
+  padding-left: 1%;
+  position: absolute;
+}
+div.container {
+    border: 1px solid black;
+}
+
+div.box {
+  box-sizing: border-box;
+  width: 33.23%;
+  height: 90px;
+  border: 1px solid black;
+  float: left;
+  animation-duration: 0.7s;
+  animation-delay: 0.5s;
+  font-family: 'Permanent Marker', cursive;
+  font-variant: small-caps;
+  font-size: 55px;
+  text-shadow: 2px 2px #FF0000;
+  letter-spacing: 3px;
+}
+#canvas{
+  position: relative;
+  padding-top: 0%;
+  padding-left: 0%;"
+}
+.sidenav {
+  height: 200px;
+  width: 500px;
+  position: fixed;
+  top: 5%;
+  left: 64%;
+  overflow-x: visible;
+  padding-top: 60px;
+}
+.sidenav-bottom {
+  height: 200px;
+  width: 500px;
+  position: fixed;
+  top: 60%;
+  left: 64%;
+  overflow-x: visible;
+  padding-top: 60px;
+}
+.clickable{
+ position: absolute;
+ top: 90px;
+ left: 1px;
+}
+#item1, #item2, #item3, #item4, #battle1, #battle2, #battle3, #battle4 {
+position: relative;
+padding-left: 20%;
+animation-duration: 0.7s;
+animation-delay: 0.5s;
+font-family: 'Permanent Marker', cursive;
+font-variant: small-caps;
+text-align: left;
+font-size: 25px;
+text-shadow: 2px #FF0000;
+letter-spacing: 3px;
+}
+body{
+}
+</style>
