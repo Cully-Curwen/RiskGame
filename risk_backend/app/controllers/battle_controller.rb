@@ -13,8 +13,11 @@ class GameController < ApplicationController
 
   def continue_attack
     if params[:user_id] == Game.STATE[:currentPlayer].id
-      Battle.continueAttack(params[:continue_attack])
+      case Battle.continueAttack(params[:continue_attack])
+      when 0
       render json: Game.gameState, status: :accepted
+      when 1
+      end
     else
       render json: {error: 'Not your turn'}, status: 400
     end
