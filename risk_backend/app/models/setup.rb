@@ -17,7 +17,7 @@ class Setup
       return puts "Not Enough Players"
     end
     randomStart
-    Game.STATE[:currentPhase] = "Setup - Deployment"
+    Game.STATE[:currentPhase] = "Deployment"
     goesFirst
     puts "startGame completed"
   end
