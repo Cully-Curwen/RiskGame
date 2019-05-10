@@ -10,8 +10,8 @@ const battle2 = document.querySelector("#battle2")
 const battle3 = document.querySelector("#battle3")
 const battle4 = document.querySelector("#battle4")
 
-// let session = {name: "Greg", colour: "Blue", id: 1}
-let session = {name: "Bob", colour: "Red", id: 2}
+// let session = {name: "Greg", colour: "Blue", id: 1, income: 4}
+let session = {name: "Bob", colour: "Red", id: 2, income: 4}
 
 //sidebar function
 function openNav() {
@@ -25,9 +25,9 @@ function closeNav() {
 
 //show tile on side button
 const board_logic = tile_id => {
-  if (Game.state.currentPhase == "Deployment"){
+  if (Game.state.currentPhase == "Reinforcement"){
     if(Game.state.currentPlayer.id == session.id) {
-      deployment_phase(tile_id)
+      reinforcements_phase(tile_id)
     }else{
       info1.innerText = `${Game.state.users[0].name}: ${Game.state.territories.map(tile => tile.owner.id == Game.state.users[0].id).filter(Boolean).length} controlled territories`
       info2.innerText = `${Game.state.users[1].name}: ${Game.state.territories.map(tile => tile.owner.id == Game.state.users[1].id).filter(Boolean).length} controlled territories  ${Game.state.users[2].name}: ${Game.state.territories.map(tile => tile.owner.id == Game.state.users[2].id).filter(Boolean).length} controlled territories`
@@ -35,9 +35,21 @@ const board_logic = tile_id => {
       info4.innerText = `Tile: ${mapObject.select(tile_id).name}`
       info5.innerText = `Controlled by: ${Game.state.territories.find(tile => tile.id == tile_id).owner.name}`
       info6.innerText = `Armies: ${Game.state.territories.find(tile => tile.id == tile_id).armies}`
-    }}else if(Game.state.currentPhase == "Attack"){
-      render_battle()
-  }else if(Game.state.currentPhase == "Movement"){
+    }
+  }else if(Game.state.currentPhase == "Battle"){
+      if(Game.state.currentPlayer.id == session.id){
+      attack_phase(tile_id)
+        if(Game.state.liveBattle != null){
+          render_battle()}
+    }else{
+          info1.innerText = `${Game.state.users[0].name}: ${Game.state.territories.map(tile => tile.owner.id == Game.state.users[0].id).filter(Boolean).length} controlled territories`
+          info2.innerText = `${Game.state.users[1].name}: ${Game.state.territories.map(tile => tile.owner.id == Game.state.users[1].id).filter(Boolean).length} controlled territories  ${Game.state.users[2].name}: ${Game.state.territories.map(tile => tile.owner.id == Game.state.users[2].id).filter(Boolean).length} controlled territories`
+          info3.innerText = `-------------------------------`
+          info4.innerText = `Tile: ${mapObject.select(tile_id).name}`
+          info5.innerText = `Controlled by: ${Game.state.territories.find(tile => tile.id == tile_id).owner.name}`
+          info6.innerText = `Armies: ${Game.state.territories.find(tile => tile.id == tile_id).armies}`
+      }
+  }else if(Game.state.currentPhase == "Redeployment"){
     if(Game.state.currentPlayer.id == session.id){
       movement_phase(tile_id)
   }else
@@ -109,13 +121,13 @@ const connect = new_user => {
 }
 
 //DEPLOYEMENT PHASE
-const deployment_phase = tile_id => {
+const reinforcements_phase = tile_id => {
   const button_deployment = document.createElement("button")
   button_deployment.class = "button_deployment"
   button_deployment.innerText = `Submit and Proceed to Attack Turn`
 
   //////////////////////////////////////////
-  info1.innerText = `Reinforcement left`
+  info1.innerText = `Reinforcement left: ${session.income}`
   info2.innerText = `=============================`
   info3.innerText = `Deployement phase, select a tile to deploy trops on`
   info4.innerText = `Tile: ${mapObject.select(tile_id).name}`
@@ -140,8 +152,8 @@ const deployment_phase = tile_id => {
     increase_button.addEventListener("click", () =>{
       let box_value = document.getElementById("counter-box")
       let old_value = parseInt(box_value.value)
-      if (box_value.value = "2"){
-        box_value.value = "2"
+      if (box_value.value == session.income){
+        box_value.value = session.income
       }else{
       box_value.value = (old_value+=1).toString()
     }})
@@ -158,7 +170,7 @@ const deployment_phase = tile_id => {
 
     submit_reinforcement_button.addEventListener("click", () => {
       let box_value = document.getElementById("counter-box")
-      fetch(IP_ADDRESS+'deploy_armies', {
+      fetch(IP_ADDRESS+'reinforce', {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({user_id: session.id, territory_id: tile_id, armies: parseInt(box_value.value)})
@@ -184,15 +196,14 @@ const deployment_phase = tile_id => {
 //Check if the region is reachable 2
 const neighbours_checker = tile_id => {
   const selected_tile_obj = Game.state.territories.find(terr => terr.id == tile_id)
-  if(selected_tile_obj.owner.name == `${session.name}`){
-    return "Owned territory, cannot Attack!"
+  if(selected_tile_obj.owner.name == session.name){
+    info6.innerText = "Owned territory, cannot Attack!"
   }else{
     const list = mapObject.all_tiles
     const single = list.find(tile => tile.id == tile_id)
     const neighbours = single.neighbours.flat().map( ele => Game.state.territories.find(ter => ter.id == ele))
     const origin_of_attack = neighbours.find(terr => terr.owner.name == `${session.name}`)
       if (origin_of_attack) {
-
         const attack_button = document.createElement("button")
         const army_quantities = document.createElement("div")
         const h1 = document.createElement("h1")
@@ -206,10 +217,11 @@ const neighbours_checker = tile_id => {
         army_quantities.appendChild(decrease_button)
         info6.append(attack_button)
 
-        h1.innerText = `Reachable from ${mapObject.find(terr => terr.id == origin_of_attack.id).name}. Preparing attack`
+        h1.innerText = `Reachable from ${mapObject.select(tile_id).name}. Preparing attack`
         counter.innerHTML = `<input type="text" id="counter-box" value="0">`
         increase_button.innerText = `+`
         decrease_button.innerText = `-`
+        attack_button.class = "Attack_button_phase"
         attack_button.innerText = `ATTACK!`
         increase_button.addEventListener("click", () =>{
           let box_value = document.getElementById("counter-box")
@@ -230,7 +242,8 @@ const neighbours_checker = tile_id => {
           }
         })
 
-        attack_button.addEventListener("click", () => {debugger
+        attack_button.addEventListener("click", () => {
+          debugger
           let box_value = document.getElementById("counter-box")
           posting_attack(origin_of_attack, tile_id, session.id, box_value.value)
         })
@@ -241,12 +254,12 @@ const neighbours_checker = tile_id => {
 }
 
 //POSTING ATTACK 3
-const posting_attack = (origin_of_attack_object, tile_id, session_id) => {
+const posting_attack = (origin_of_attack_object, tile_id, session_id, armies) => {
   fetch(IP_ADDRESS+'attack', {
     method: "POST",
     headers: {"Content-Type" : "application/json"},
-    body: JSON.stringify({attacker_id: session_id, armies: box_value.value, target: tile_id})
-  }).then(resp => resp.json()).then(resp => render_battle(resp))
+    body: JSON.stringify({user_id: session_id, base_territory_id: origin_of_attack_object.id, target_territory_id: tile_id, armies: parseInt(armies)})
+  }).then(resp => resp.json()).then(get_state())
 }
 
 //ATACK PHASE 1
@@ -267,29 +280,13 @@ const attack_phase = tile_id => {
   }
 
 //RENDER BATTLE
+document.addEventListener("DOMContentLoaded", () =>{
 const render_battle = () => {
-
-  const fake_promise = {
-    liveBattle : {
-     attacker: {
-       territory_id: 17,
-       user: "Greg",
-       armies: 2,
-       casualties: 2,
-       dice: [2,4,5]
-     },
-     defender: {
-       territory_id: 9,
-       user: "Bob",
-       armies: 2,
-       casualties: 1,
-       dice: [6,4,2]
-     },
-     battleRound: 2,
-   }}
+  const button = document.querySelector(".Attack_button_phase")
+  button.remove()
    //RENDER DIFFERNT LINES DEPENDS ON SESSION USER
    const confirm_or_retire = () => {
-     if(session.name == fake_promise.liveBattle.attacker.user){
+     if(session.name == Game.state.currentPlayer.name){
        const retire_button = document.createElement("button")
        const attack_again = document.createElement("button")
        retire_button.innerText = "Abort Attack!"
@@ -299,30 +296,29 @@ const render_battle = () => {
        battle3.appendChild(attack_again)
 
        attack_again.addEventListener("click", () => {
-         posting_attack(origin_of_attack, tile_id, session.id)
+         continue_attack(true)
        })
-
        retire_button.addEventListener("click", () => {
-         retire(origin_of_attack, tile_id, session.id)
-       })
+         continue_attack(false)
+        })
 
-     }else if (session.name == promise.liveBattle.defender.user){
+      const continue_attack = boolean => {
+        fetch(IP_ADDRESS+'continue_attack',{
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: {user_id: session.id, continue_attack: boolean}
+      }).then(resp => resp.json()).then(board_logic())
+
+    }}else {
        battle4.innerText = `Awaiting the attacker to advace turn`
-     }
-   }
-  item1.innerText=``
-  item2.innerText=``
-  item3.innerText=``
-  item4.innerText=``
-  item5.innerText=``
-  item6.innerText=``
-  battle1.innerText = `Attacker: ${fake_promise.liveBattle.attacker.user} Defender: ${fake_promise.liveBattle.defender.user}`
-  battle2.innerText = `Attackers rolls ${fake_promise.liveBattle.attacker.dice}. Defender Rolls ${fake_promise.liveBattle.defender.dice}`
-  battle3.innerText = `Casualities: Attacker loses ${fake_promise.liveBattle.attacker.casualties}, Defender loses ${fake_promise.liveBattle.defender.casualties}`
+     }}
+
+  battle1.innerText = `Attacker: ${Game.state.liveBattle.attacker.user.name} Defender: ${Game.state.liveBattle.defender.user.name}`
+  battle2.innerText = `Attackers rolls ${Game.state.liveBattle.attacker.dice}. Defender Rolls ${Game.state.liveBattle.defender.dice}`
+  battle3.innerText = `Casualities: Attacker loses ${Game.state.liveBattle.attacker.casualties}, Defender loses ${Game.state.liveBattle.defender.casualties}`
   confirm_or_retire()
 
-
-}
+}})
 
 //MOVEMENT CHECKER PHASE 2
 const movement_neighbours_phase = tile_id => {
@@ -373,7 +369,7 @@ const movement_neighbours_phase = tile_id => {
             }
           })
 
-          attack_button.addEventListener("click", () => {debugger
+          attack_button.addEventListener("click", () => {
             let box_value = document.getElementById("counter-box")
             posting_movement(origin_of_movement, tile_id, session.id, box_value.value)
           })
