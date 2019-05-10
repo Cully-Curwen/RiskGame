@@ -39,6 +39,7 @@ class Setup
     Setup.randomStart
     Game.STATE[:currentPhase] = "Deployment"
     Setup.goesFirst
+    Game.STATE[:live] = true
     puts "startGame completed"
     return 0
   end

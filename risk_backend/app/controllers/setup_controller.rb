@@ -13,7 +13,7 @@ class SetupController < ApplicationController
   end
 
   def lobby
-    render json: {users: Game.STATE[:users], live: Game.STATE[:live]}.to_json, status: :accepted
+    render json: {live: Game.STATE[:live], users: Game.STATE[:users], setupState: Setup.STATE}.to_json, status: :accepted
   end
 
   def startGame
