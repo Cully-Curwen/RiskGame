@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   # Universal
   root to: 'game#gameState'
   get 'state', to: 'game#gameState'
-  get 'next_phase', to: 'game#nextPhase'
+  post 'next_phase', to: 'game#nextPhase'
   post 'end_turn', to: 'game#endTurn'
   # Setup Phase
   get 'lobby', to: 'setup#lobby'
