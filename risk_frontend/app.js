@@ -26,15 +26,21 @@ function closeNav() {
 //show tile on side button
 const board_logic = tile_id => {
   if (Game.state.currentPhase == "Deployment"){
-    movement_phase(tile_id)
-
     if(Game.state.currentPlayer.id == session.id) {
-        // deployment_phase(tile_id)
-      movement_phase(tile_id)
+      deployment_phase(tile_id)
     }else{
+      info1.innerText = `${Game.state.users[0].name}: ${Game.state.territories.map(tile => tile.owner.id == Game.state.users[0].id).filter(Boolean).length} controlled territories`
+      info2.innerText = `${Game.state.users[1].name}: ${Game.state.territories.map(tile => tile.owner.id == Game.state.users[1].id).filter(Boolean).length} controlled territories  ${Game.state.users[2].name}: ${Game.state.territories.map(tile => tile.owner.id == Game.state.users[2].id).filter(Boolean).length} controlled territories`
+      info3.innerText = `-------------------------------`
+      info4.innerText = `Tile: ${mapObject.select(tile_id).name}`
+      info5.innerText = `Controlled by: ${Game.state.territories.find(tile => tile.id == tile_id).owner.name}`
+      info6.innerText = `Armies: ${Game.state.territories.find(tile => tile.id == tile_id).armies}`
+    }}else if(Game.state.currentPhase == "Attack"){
       render_battle()
-    }
-  }else{
+  }else if(Game.state.currentPhase == "Movement"){
+    if(Game.state.currentPlayer.id == session.id){
+      movement_phase(tile_id)
+  }else
     info1.innerText = `${Game.state.users[0].name}: ${Game.state.territories.map(tile => tile.owner.id == Game.state.users[0].id).filter(Boolean).length} controlled territories`
     info2.innerText = `${Game.state.users[1].name}: ${Game.state.territories.map(tile => tile.owner.id == Game.state.users[1].id).filter(Boolean).length} controlled territories`
     info3.innerText = `--------------------------------------`
@@ -347,10 +353,11 @@ const movement_neighbours_phase = tile_id => {
           increase_button.innerText = `+`
           decrease_button.innerText = `-`
           attack_button.innerText = `ATTACK!`
+
           increase_button.addEventListener("click", () =>{
             let box_value = document.getElementById("counter-box")
             let old_value = parseInt(box_value.value)
-            if ((box_value.value == origin_of_movement.armies)-1){
+            if ((box_value.value == origin_of_movement.armies)){
               box_value.value = `${origin_of_movement.armies-1}`
             }else{
             box_value.value = (old_value+=1).toString()

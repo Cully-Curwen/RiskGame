@@ -1,5 +1,5 @@
 
-const IP_ADDRESS = "http://localhost:3000/"
+const IP_ADDRESS = "http://10.218.2.14:3000/"
 
 const get_state = () => {
   fetch(IP_ADDRESS+'state')
