@@ -10,7 +10,7 @@ class API {
   static EndTurn = user_id => this.post(this.BaseURL + "end_turn", {user_id})
   // Game Setup Phase
   static Lobby = () => this.get(this.BaseURL + "lobby")
-  static ConnectServer = (name, colour) => this.post(this.BaseURL + "connect", {name, colour})
+  static ConnectServer = (name, colour) => this.post(this.BaseURL + "connect", {user:{name, colour}})
   static StartGame = (user_id, ready) => this.post(this.BaseURL + "start_game", {user_id, ready})
   static DeployArmies = (user_id, territory_id, armies) => this.post(this.BaseURL + "deploy_armies", {user_id, territory_id, armies})
   // Reinforcement Phase
@@ -24,7 +24,7 @@ class API {
   // fetch methods
   static get = (url) => {
     return fetch(url)
-      .then(resp => resp.json)
+      .then(resp => resp.json())
   };
 
   static post = (url, body) => {
@@ -34,7 +34,7 @@ class API {
       body: JSON.stringify(body)
     };
     return fetch(url, configObj)
-      .then(resp => resp.json)
+      .then(resp => resp.json())
   };
 
 };
