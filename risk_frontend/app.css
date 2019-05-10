@@ -51,8 +51,7 @@ div.box {
 }
 .sidenav-bottom {
   height: 200px;
-  width: 500px;
-  position: fixed;
+  width: 1300px;
   top: 60%;
   left: 64%;
   overflow-x: visible;
@@ -75,7 +74,7 @@ font-size: 25px;
 text-shadow: 2px #FF0000;
 letter-spacing: 3px;
 }
-.button_deployment {
+.submit_reinforcement_button {
   background-color: #555555;
 }
 
