@@ -8,6 +8,7 @@ class User
     @colour = attr[:colour]
     attr[:neutral] ? @id = 0 : giveId
     Game.STATE[:users] << self
+    Setup.STATE[@id] = false
   end
 
   def giveId

@@ -11,15 +11,36 @@ class Setup
     READY
   end
 
+  def self.readyUp(user_id, ready)
+    puts "readUp called"
+    Setup.STATE[user_id] = ready
+    Setup.playersReady
+  end
+
+  def self.playersReady
+    puts "playersRead called"
+    if Game.STATE[:users].count == Setup.STATE.values.count
+      if !Setup.STATE.values.include?(false)
+        Setup.startGame
+      else
+        return 1
+      end
+    else
+      puts "player count error: Game.STATE[:users] == Setup.STATE.values"
+      return 2
+    end
+  end
+
   def self.startGame
     puts "startGame called"
     if checkPlayerCount == false
       return puts "Not Enough Players"
     end
-    randomStart
+    Setup.randomStart
     Game.STATE[:currentPhase] = "Deployment"
-    goesFirst
+    Setup.goesFirst
     puts "startGame completed"
+    return 0
   end
   
   def self.goesFirst
