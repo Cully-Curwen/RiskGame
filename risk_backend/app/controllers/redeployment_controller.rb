@@ -2,7 +2,7 @@ require 'json'
 
 class RedeploymentController < ApplicationController
 
-  def attack
+  def redeploy
     if params[:user_id] == Game.STATE[:currentPlayer].id
       case Redeployment.redeploy(params[:base_territory_id], params[:target_territory_id], params[:armies])
       when 0

@@ -14,6 +14,10 @@ class Battle
   def self.LOCK
     LOCK
   end
+
+  def self.LOCK_reset
+    LOCK.clear
+  end
   
   def createAttacker(territory_id, armies)
     puts "createAttacker called"
@@ -33,20 +37,33 @@ class Battle
 
   def self.continueAttack(order)
     puts "continueAttack called"
-    order ? attack : withdraw
+    order ? Battle.logic : Battle.withdraw
   end
 
-  def self.attack(defenderTerritory_id, attackerTerritory_id, attackerArmies)
+  def self.attack(base_territory_id, target_territory_id,  armies)
     puts "attack called"
+    attackerTerritory_id = base_territory_id
+    defenderTerritory_id = target_territory_id
+    attackerArmies = armies
     if LOCK.include?(attackerTerritory_id)
+      puts "attack complete"
       return 1
     end
-    battle = Game.STATE[:liveBattle] |= Battle.new(defenderTerritory_id, attackerTerritory_id, attackerArmies)
+    if !Game.STATE[:liveBattle]
+      Battle.new(defenderTerritory_id, attackerTerritory_id, attackerArmies)
+    end
+    Battle.logic
+    puts "attack complete"
+    return 0
+  end
+
+  def self.logic
+    puts "logic called"
+    battle = Game.STATE[:liveBattle]
     battle.attackDice
     battle.defendDice
     battle.casualties
     battle.battleRound += 1
-    return 0
   end
 
   def self.withdraw
@@ -55,8 +72,9 @@ class Battle
     atckTer = Game.STATE[:territories].find{ |ter| ter.id == battle.attacker.territory_id }
     atckTer.armies += battle.attacker.armies
     defTer = Game.STATE[:territories].find{ |ter| ter.id == battle.defender.territory_id }
-    defTer.armies += battle.defender.armies
+    defTer.armies -= battle.defender.casualties
     LOCK << battle.attacker.territory_id
+    Game.STATE[:liveBattle] = nil
   end
   
   def self.victory
@@ -66,6 +84,8 @@ class Battle
     territory.owner = Game.STATE[:currentPlayer]
     territory.armies = battle.attacker.armies
     LOCK << battle.attacker.territory_id
+    LOCK << battle.defender.territory_id
+    Game.STATE[:liveBattle] = nil
   end
   
   def attackDice
@@ -80,7 +100,7 @@ class Battle
     else
       @attacker.rollDice(3)
     end
-    @attacker.dice.sort!{ |a, b| a <=> b }
+    @attacker.dice.sort!{ |a, b| b <=> a }
   end
   
   def defendDice
@@ -93,7 +113,7 @@ class Battle
     else
       @defender.rollDice(2)
     end
-    @defender.dice.sort!{ |a, b| a <=> b }
+    @defender.dice.sort!{ |a, b| b <=> a }
   end
   
   def casualties
@@ -101,7 +121,8 @@ class Battle
     num = @attacker.dice.count < @defender.dice.count ? @attacker.dice.count : @defender.dice.count
     puts "atckD:#{@attacker.dice}, dnfD:#{@defender.dice}"
     while num > 0 do
-      @attacker.dice[num] > @defender.dice[num] ? @defender.casualty : @attacker.casualty
+      index = num - 1
+      @attacker.dice[index] > @defender.dice[index] ? @defender.casualty : @attacker.casualty
       self.validate
       num -= 1
     end
@@ -109,6 +130,7 @@ class Battle
 
   def validate
     puts "validate called"
+    puts "attack: #{@attacker.armies}, defender: #{@defender.armies}"
     if @attacker.armies == 0
       Battle.withdraw
     end

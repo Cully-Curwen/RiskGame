@@ -3,10 +3,11 @@ Rails.application.routes.draw do
   get 'test', to: 'game#try'
   get 'users/new', to: 'game#newUser'
   get 'gen', to: 'game#quickGen'
+  get 'full_gen', to: 'game#fullGen'
   # Universal
   root to: 'game#gameState'
   get 'state', to: 'game#gameState'
-  get 'next_phase', to: 'game#nextPhase'
+  post 'next_phase', to: 'game#nextPhase'
   post 'end_turn', to: 'game#endTurn'
   # Setup Phase
   get 'lobby', to: 'setup#lobby'

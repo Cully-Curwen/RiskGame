@@ -24,7 +24,7 @@
 <b>Game Setup Phase</b>
 * GET - LOBBY
   - route 'lobby'
-  - returns Game.STATE[:users]
+  - returns Game.STATE[:users] + Game.STATE[:live] + Setup.STATE
 
 * POST - CONNECT SERVER
   - route 'connect'

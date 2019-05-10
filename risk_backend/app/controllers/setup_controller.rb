@@ -13,19 +13,17 @@ class SetupController < ApplicationController
   end
 
   def lobby
-    render json: Game.STATE[:users].to_json, status: :accepted
+    render json: {live: Game.STATE[:live], users: Game.STATE[:users], setupState: Setup.STATE}.to_json, status: :accepted
   end
 
   def startGame
-    user_id = params[:user_id]
-    ready = params[:ready]
-    Setup.STATE[user_id] = ready
-    test =  Setup.STATE.map{ |key, value| value }
-    if !test.includes?(false)
-      Setup.startGame
-      render json: {gameState: Game.STATE, setupReady: Setup.READY}.to_json, status: :accepted
-    else
-      render json: {gameState: Game.STATE, setupReady: Setup.READY}.to_json, status: :accepted
+    case Setup.readyUp(params[:user_id], params[:ready])
+    when 0
+      render json: {gameState: Game.STATE}.to_json, status: :accepted
+    when 1
+      render json: {gameState: Game.STATE, setupReady: Setup.STATE}.to_json, status: :accepted
+    when 2
+      render json: {error: "something has gone wrong"}.to_json, status: 500
     end
   end
 
