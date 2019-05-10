@@ -6,6 +6,10 @@ class Redeployment
     LOCK
   end
 
+  def self.LOCK_reset
+    LOCK.clear
+  end
+
   def self.findTerritory(id)
     Game.STATE[:territories].find{ |territory| territory.id == id }
   end

@@ -14,6 +14,10 @@ class Battle
   def self.LOCK
     LOCK
   end
+
+  def self.LOCK_reset
+    LOCK.clear
+  end
   
   def createAttacker(territory_id, armies)
     puts "createAttacker called"

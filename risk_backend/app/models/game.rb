@@ -34,7 +34,7 @@ class  Game
     Game.lockReset
     STATE[:currentPlayer].setIncome
     if STATE[:currentPlayer].id == 0
-      Game.STATE[:currentPhase] == "Deployment" ? Setup.neutralDeploy : neutralTurn
+      Game.STATE[:currentPhase] == "Deployment" ? Setup.neutralDeploy : Game.neutralTurn
       Game.nextPlayer
     end
   end
@@ -82,8 +82,8 @@ class  Game
 
   def self.lockReset
     puts "lockReset called"
-    Battle.LOCK = []
-    Redeploy.LOCK = []
+    Battle.LOCK_reset
+    Redeployment.LOCK_reset
   end
 
 end 

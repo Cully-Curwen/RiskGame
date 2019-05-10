@@ -26,6 +26,16 @@ class GameController < ApplicationController
     Setup.startGame
     render json: Game.gameState, status: :accepted
   end
+
+  def fullGen
+    if Game.STATE[:users].count < 2
+      User.new(name: "Greg", colour: "Blue")
+      User.new(name: "Bob", colour: "Red")
+    end
+    Setup.startGame
+    Setup.fullStartBoard
+    render json: Game.gameState, status: :accepted
+  end
   # TEST ROUTES END
   
   def gameState

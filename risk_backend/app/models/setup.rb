@@ -133,4 +133,23 @@ class Setup
     Game.STATE[:currentPlayer].income = 0
   end
 
+  def self.fullStartBoard
+    puts "fullStartBoard called"
+    check = Setup.STATE.values.reduce(:+)
+    while check > 0 do
+      Game.neutralTurn
+      index = Game.STATE[:users].find_index{|user| user == Game.STATE[:currentPlayer]} + 1
+      if index == Game.STATE[:users].length
+        index = 0
+      end
+      Game.STATE[:currentPlayer] = Game.STATE[:users][index]
+      Game.STATE[:currentPlayer].income = Setup.STATE[index]
+      Setup.STATE[index] = 0
+      check = Setup.STATE.values.reduce(:+)
+    end
+    puts "Setup.STATE: #{STATE}"
+    Game.nextPhase
+    puts "fullStartBoard complete"
+  end
+
 end

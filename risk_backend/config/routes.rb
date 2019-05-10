@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'test', to: 'game#try'
   get 'users/new', to: 'game#newUser'
   get 'gen', to: 'game#quickGen'
+  get 'full_gen', to: 'game#fullGen'
   # Universal
   root to: 'game#gameState'
   get 'state', to: 'game#gameState'
