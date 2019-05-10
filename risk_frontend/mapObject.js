@@ -1,5 +1,5 @@
 
-const IP_ADDRESS = "http://10.218.7.206:3000/"
+const IP_ADDRESS = "http://localhost:3000/"
 
 const get_state = () => {
   fetch(IP_ADDRESS+'state')
@@ -366,6 +366,16 @@ get_state()
 //   - body: {user_id: //int// }
 //   - returns Game.STATE
 //
+// window.onload = () => {
+//   get_state()
+//     .then(() => {
+//       render_headers()
+//       // board_logic()
+//       mapObject.render()
+//     })
+//   setTimeout(get_state, 10000)
+// }
+
 // <b>Game Setup Phase</b>
 // * POST - CONNECT SERVER
 //   - route 'connect'
