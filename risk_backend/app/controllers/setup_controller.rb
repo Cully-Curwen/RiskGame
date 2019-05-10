@@ -3,12 +3,15 @@ require 'json'
 class SetupController < ApplicationController
 
   def connect
-    puts connect_params
-    if connect_params[:name] && connect_params[:colour]
-      playerReg = User.new(name: connect_params[:name], colour: connect_params[:colour])
-      render json: playerReg.to_json, status: :accepted
+    if Game.STATE[:live]
+      render json: {error: 'Game is live, You can not join now'}, status: 400 
     else
-      render json: {error: 'Wrong Details'}, status: 400
+      if connect_params[:name] && connect_params[:colour]
+        playerReg = User.new(name: connect_params[:name], colour: connect_params[:colour])
+        render json: playerReg.to_json, status: :accepted
+      else
+        render json: {error: 'Wrong Details'}, status: 400
+      end
     end
   end
 
